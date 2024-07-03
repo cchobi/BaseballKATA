@@ -3,8 +3,17 @@
 
 using namespace std;
 
+struct GuessResult {
+	bool solved;
+	int strikes;
+	int balls;
+};
+
 class Baseball {
 public:
+	explicit Baseball(const string& question) : question{question}
+	{}
+
 	bool isDuplicatedNumber(string guessNumber)
 	{
 		return guessNumber[0] == guessNumber[1]
@@ -19,8 +28,8 @@ public:
 		}
 
 		for (auto ch : guessNumber) {
-			if (ch < '0' || ch > '9') continue;
-			throw invalid_argument("Must be number.");
+			if (ch >= '0' && ch <= '9') continue;
+			throw invalid_argument("Mus be number.");
 		}
 
 		if (isDuplicatedNumber(guessNumber)) {
@@ -28,8 +37,42 @@ public:
 		}
 	}
 
-	void guess(const string guessNumber)
+	GuessResult guess(const string& guessNumber)
 	{
 		assertIllegalArgument(guessNumber);
+		if (guessNumber == question) {
+			return { true, 3, 0 };
+		}
+
+		return { true, checkStrikes(guessNumber), checkBalls(guessNumber) };
 	}
+
+	int checkStrikes(const string& guessNumber)
+	{
+		if (guessNumber == question) {
+			return 3;
+		}
+
+		int numStrikes = 0;
+		for (int i = 0; i < 3; i++) {
+			if (guessNumber[i] == question[i]) numStrikes++;
+		}
+
+		return numStrikes;
+	}
+
+	int checkBalls(const string& guessNumber)
+	{
+		int numBalls = 0;
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (i != j && guessNumber[i] == question[j]) numBalls++;
+			}
+		}
+
+		return numBalls;
+	}
+
+private:
+	string question;
 };
