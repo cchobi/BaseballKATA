@@ -44,10 +44,10 @@ public:
 			return { true, 3, 0 };
 		}
 
-		return { true, checkStrikes(guessNumber), checkBalls(guessNumber) };
+		return { true, getStrikes(guessNumber), getBalls(guessNumber) };
 	}
 
-	int checkStrikes(const string& guessNumber)
+	int getStrikes(const string& guessNumber)
 	{
 		if (guessNumber == question) {
 			return 3;
@@ -61,7 +61,7 @@ public:
 		return numStrikes;
 	}
 
-	int checkBalls(const string& guessNumber)
+	int getBalls(const string& guessNumber)
 	{
 		int numBalls = 0;
 		for (int i = 0; i < 3; i++) {
